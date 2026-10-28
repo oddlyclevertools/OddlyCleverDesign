@@ -1,0 +1,105 @@
+/* Bulk Create: panel, toolbar link and the preview dialog. Prefix bk-. */
+.bk-panel { display: grid; }
+.bk-lead { margin: 0 0 6px; color: var(--muted); font-size: 13px; line-height: 1.45; }
+.bk-note { margin: 6px 0; font-size: 12px; color: var(--faint); line-height: 1.45; }
+.bk-note code, .bk-ph { font: 600 11.5px ui-monospace, Consolas, monospace; color: var(--cyan); }
+.bk-warn { margin: 8px 0 0; font-size: 12px; color: var(--amber); }
+.bk-empty { margin: 4px 0; font-size: 12.5px; color: var(--faint); }
+.bk-paste { width: 100%; resize: vertical; min-height: 96px; margin-bottom: 8px; font: 12.5px/1.4 ui-monospace, Consolas, monospace; }
+.bk-loaded { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: var(--radius-sm);
+  background: var(--bg-3); border: 1px solid var(--line-2); }
+.bk-loaded .icon { color: var(--ok); }
+.bk-loaded small { color: var(--faint); }
+.bk-table { margin-top: 8px; border: 1px solid var(--line); border-radius: var(--radius-sm); overflow: hidden; font-size: 12px; }
+.bk-tr { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); border-top: 1px solid var(--line); }
+.bk-tr:first-child { border-top: 0; }
+.bk-tr span { padding: 5px 7px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: var(--muted); }
+.bk-th span { color: var(--text); font-weight: 700; background: rgba(255, 255, 255, .03); }
+.bk-sub { margin: 12px 0 6px; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.bk-targets { display: grid; gap: 6px; }
+.bk-target { display: grid; grid-template-columns: minmax(0, 1fr) 132px; gap: 6px; align-items: center; padding: 4px; border-radius: var(--radius-sm);
+  border: 1px solid transparent; transition: background .15s, border-color .15s; }
+.bk-target.on { border-color: var(--accent); background: rgba(255, 46, 126, .1); }
+.bk-tname { display: flex; align-items: center; gap: 7px; min-width: 0; padding: 4px 6px; border: 0; border-radius: 6px; background: transparent; text-align: left; font-size: 13px; }
+.bk-tname:hover { background: var(--bg-4); }
+.bk-tname span { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.bk-tname .icon { color: var(--faint); }
+.bk-col { width: 100%; font-size: 12.5px; }
+.bk-ph { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; padding: 0 4px; }
+.bk-go { width: 100%; justify-content: center; height: 42px; margin-top: 12px; }
+.bk-tool { gap: 6px; }
+.bk-tool-label { font-size: 12px; font-weight: 700; color: var(--cyan); padding-left: 4px; }
+.bk-tool-sel { height: 30px; max-width: 150px; font-size: 12.5px; }
+
+/* ---- preview dialog ---- */
+.modal.wide:has(.bk-preview) { width: min(1100px, calc(100vw - 32px)); }
+.bk-preview { display: grid; gap: 12px; min-width: 0; }
+.bk-progress { padding: 28px 8px; display: grid; gap: 10px; }
+.bk-bar { height: 4px; border-radius: 4px; background: var(--bg-4); overflow: hidden; }
+.bk-bar i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--accent), var(--cyan)); transition: width .2s var(--ease); }
+.bk-run .bk-bar { opacity: 0; transition: opacity .2s; }
+.bk-run .bk-bar.show { opacity: 1; }
+.bk-status { margin: 0; font-size: 12.5px; color: var(--muted); }
+.bk-sum { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 13px; }
+.bk-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 12px; align-items: start; max-height: min(56vh, 560px); overflow-y: auto; padding: 4px; }
+.bk-card { display: grid; align-content: start; gap: 6px; padding: 8px; border-radius: var(--radius); background: var(--bg-3); border: 1px solid var(--line-2); cursor: pointer;
+  transition: opacity .15s, border-color .15s, transform .18s var(--spring); }
+.bk-card:hover { border-color: rgba(255, 230, 240, .3); }
+.bk-card.warn { border-color: rgba(255, 177, 92, .55); }
+.bk-card.off { opacity: .42; }
+.bk-thumb { position: relative; border-radius: 6px; overflow: hidden; background: #0008; }
+.bk-thumb img { display: block; width: 100%; height: auto; }
+.bk-thumb input { position: absolute; top: 6px; left: 6px; width: 18px; height: 18px; accent-color: var(--accent); }
+.bk-card-name { font-size: 12.5px; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.bk-card-name small { color: var(--faint); font-weight: 500; margin-right: 6px; }
+.bk-flags { display: flex; flex-wrap: wrap; gap: 4px; }
+.bk-flag { display: inline-flex; align-items: center; gap: 4px; padding: 2px 7px; border-radius: 99px; font-size: 11px; font-weight: 600; }
+.bk-flag.bad { background: rgba(255, 177, 92, .16); color: var(--amber); }
+.bk-flag.info { background: rgba(143, 227, 255, .12); color: var(--cyan); }
+.bk-flag.ok { background: rgba(74, 222, 128, .14); color: var(--ok); }
+.bk-foot { display: flex; align-items: flex-end; gap: 14px; padding-top: 10px; border-top: 1px dashed var(--line-2); }
+.bk-foot-left { flex: 1; min-width: 0; display: grid; gap: 6px; }
+.bk-foot > .btn { height: 42px; padding: 0 20px; }
+.bk-outputs { display: flex; flex-wrap: wrap; gap: 6px; }
+.bk-out { display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 11px; border-radius: 99px; border: 1px solid var(--line-2);
+  background: var(--bg-3); color: var(--muted); font-size: 12.5px; transition: background .15s, color .15s, border-color .15s; }
+.bk-out:hover:not(:disabled) { color: var(--text); background: var(--bg-4); }
+.bk-out.on { color: var(--text); border-color: var(--accent); background: rgba(255, 46, 126, .16); }
+.bk-out:disabled { opacity: .4; cursor: default; }
+.bk-help { margin: 0; font-size: 12px; color: var(--faint); }
+@media (max-width: 1100px) {
+  .bk-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+  .bk-foot { flex-wrap: wrap; }
+}
+
+/* ---- polish pass (28 Oct 2026) ---- */
+.bk-empty { display: grid; justify-items: center; gap: 6px; padding: 16px 12px; border: 1px dashed var(--line-2); border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, .02); color: var(--muted); text-align: center; line-height: 1.45; }
+.bk-empty .icon { color: var(--accent-2); opacity: .85; }
+.bk-target { transition: background-color var(--dur-1) var(--ease-out), border-color var(--dur-1) var(--ease-out); }
+/* progress: a lit bar with a light sweeping along it */
+.bk-bar i { position: relative; overflow: hidden; border-radius: inherit; box-shadow: 0 0 10px rgba(255, 46, 126, .55); }
+.bk-progress .bk-bar i::after, .bk-bar.show i::after { content: ""; position: absolute; inset: 0; animation: oc-shimmer 1.2s linear infinite;
+  background: linear-gradient(90deg, transparent 30%, rgba(255, 255, 255, .5) 50%, transparent 70%); background-size: 200% 100%; }
+.bk-progress { padding: 20px 8px 8px; }
+/* while the previews are made: shimmering placeholder cards */
+.bk-skel { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 12px; padding: 4px; }
+.bk-skel-card { display: grid; gap: 8px; padding: 8px; border-radius: var(--radius); background: var(--bg-3); border: 1px solid var(--line); }
+.bk-skel-thumb { aspect-ratio: 16 / 10; }
+.bk-skel-line { height: 10px; width: 60%; }
+.bk-skel-card:nth-child(2) .oc-skeleton { animation-delay: .12s; }
+.bk-skel-card:nth-child(3) .oc-skeleton { animation-delay: .24s; }
+.bk-skel-card:nth-child(4) .oc-skeleton { animation-delay: .36s; }
+/* result cards: lift on hover, a pink edge when ticked, a ring for the keyboard */
+.bk-grid.oc-stagger > * { animation-fill-mode: backwards; }
+.bk-card { transition: opacity var(--dur-2) var(--ease-out), border-color var(--dur-1) var(--ease-out), box-shadow var(--dur-2) var(--ease-out),
+  transform var(--dur-2) var(--spring); }
+.bk-card:hover { transform: translateY(-2px); box-shadow: 0 14px 26px -14px #000; }
+.bk-card:not(.off):not(.warn) { border-color: rgba(255, 46, 126, .35); }
+.bk-card:focus-within { box-shadow: 0 0 0 2px var(--accent-2); }
+.bk-thumb img { transition: transform var(--dur-3) var(--ease-out); }
+.bk-card:hover .bk-thumb img { transform: scale(1.03); }
+.bk-out { transition: background-color var(--dur-1) var(--ease-out), color var(--dur-1) var(--ease-out), border-color var(--dur-1) var(--ease-out),
+  box-shadow var(--dur-2) var(--ease-out); }
+.bk-out.on { box-shadow: 0 0 14px -5px rgba(255, 46, 126, .8); }
+.bk-grid { scrollbar-width: thin; }

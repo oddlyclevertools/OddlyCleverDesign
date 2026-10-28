@@ -1,0 +1,218 @@
+/* Files feature: Download, Resize, File menu, shortcuts, About, drop overlay. Prefix fl-. */
+.fl-top-btn { height: 34px; padding: 0 12px; }
+.fl-top-btn .icon { margin-left: -2px; }
+.fl-menu-btn { width: 36px; height: 36px; }
+
+.fl-pop { padding: 14px; }
+.fl-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin-bottom: 10px; }
+.fl-head h4 { margin: 0; font-size: 15px; }
+.fl-muted { color: var(--faint); font-size: 12px; font-weight: 400; }
+.fl-label { font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+.fl-note { margin: 6px 0 0; font-size: 12px; color: var(--faint); line-height: 1.4; }
+.fl-help { margin: 8px 0 2px; font-size: 12.5px; color: var(--muted); line-height: 1.4; min-height: 2.8em; }
+.fl-sec { padding: 10px 0 4px; border-top: 1px solid var(--line); display: grid; gap: 8px; }
+.fl-sec:first-child { border-top: 0; }
+.fl-num { width: 84px; height: 32px; padding: 0 8px; }
+.fl-unit { color: var(--faint); font-size: 12px; }
+.fl-search { width: 100%; height: 34px; margin: 8px 0; }
+.fl-empty { padding: 14px 4px; color: var(--faint); font-size: 13px; text-align: center; }
+.fl-warn { color: var(--danger); font-size: 12px; min-height: 0; }
+.fl-warn:empty { display: none; }
+
+/* ---- download ---- */
+.fl-download { width: 320px; display: grid; }
+.fl-types { margin-top: 6px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+.fl-type { position: relative; display: grid; justify-items: center; gap: 4px; padding: 9px 2px 7px; border-radius: 9px;
+  border: 1px solid var(--line-2); background: var(--bg-3); color: var(--muted); font-size: 11.5px; line-height: 1.15; text-align: center;
+  transition: border-color .15s, background .15s, color .15s, transform .18s var(--spring); }
+.fl-type:hover { color: var(--text); background: var(--bg-4); }
+.fl-type:active { transform: scale(.96); }
+.fl-type.on { color: var(--text); border-color: var(--accent); background: rgba(255, 46, 126, .16); box-shadow: 0 0 0 1px var(--accent) inset; }
+.fl-type.on .icon { color: var(--accent-2); }
+.fl-tag { position: absolute; top: -7px; left: 50%; translate: -50% 0; padding: 0 5px; border-radius: 5px; font-size: 9px; font-weight: 700;
+  letter-spacing: .02em; background: linear-gradient(90deg, var(--accent), var(--pink)); color: #fff; white-space: nowrap; }
+.fl-options { display: grid; margin-top: 4px; animation: fl-in .2s var(--ease); }
+.fl-px { font-size: 12.5px; color: var(--muted); margin-top: -2px; }
+.fl-px b { color: var(--text); font-weight: 600; }
+.fl-limit { display: flex; align-items: center; gap: 6px; padding-left: 40px; transition: opacity .15s; }
+.fl-limit.off { opacity: .45; }
+.fl-go { width: 100%; justify-content: center; height: 40px; margin-top: 12px; }
+.fl-go.busy .icon { animation: fl-spin .9s linear infinite; }
+.fl-bar { height: 3px; margin-top: 8px; border-radius: 3px; background: var(--bg-4); overflow: hidden; opacity: 0; transition: opacity .2s; }
+.fl-bar.show { opacity: 1; }
+.fl-bar i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--accent), var(--pink)); transition: width .25s var(--ease); }
+.fl-status { margin-top: 6px; font-size: 12px; color: var(--faint); word-break: break-word; }
+.fl-status:empty { display: none; }
+
+/* ---- resize ---- */
+.fl-resize { width: 340px; display: grid; }
+.fl-custom { display: flex; align-items: flex-end; gap: 6px; }
+.fl-custom label { display: grid; gap: 3px; font-size: 12px; color: var(--muted); }
+.fl-custom .fl-num { width: 100px; }
+.fl-custom .ibtn { margin-bottom: 0; }
+.fl-custom .fl-unit { padding-bottom: 8px; }
+.fl-size-list { max-height: min(320px, 42vh); overflow-y: auto; margin: 0 -6px; padding: 0 6px; display: grid; gap: 1px; }
+.fl-size-group { margin: 8px 0 3px; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.fl-size-group:first-child { margin-top: 0; }
+.fl-size { display: flex; align-items: center; gap: 10px; width: 100%; padding: 7px 8px; border: 1px solid transparent; border-radius: 8px;
+  background: transparent; text-align: left; transition: background .15s, border-color .15s; }
+.fl-size:hover { background: var(--bg-4); }
+.fl-size.on { border-color: var(--accent); background: rgba(255, 46, 126, .14); }
+.fl-size-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 13px; }
+.fl-size-px { color: var(--faint); font-size: 12px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.fl-shape { width: 20px; height: 20px; flex: none; display: grid; place-items: center; }
+.fl-shape i { display: block; border: 1.6px solid var(--muted); border-radius: 2px; }
+.fl-size.on .fl-shape i { border-color: var(--accent-2); }
+.fl-badge { padding: 1px 6px; border-radius: 5px; font-size: 10.5px; background: var(--bg-4); color: var(--muted); }
+.fl-opt { padding: 10px 0 2px; border-top: 1px solid var(--line); margin-top: 8px; }
+.fl-actions { display: flex; gap: 8px; margin-top: 12px; }
+.fl-grow { flex: 1; justify-content: center; }
+
+/* ---- file menu ---- */
+.fl-menu { width: 260px; display: grid; gap: 1px; margin: -4px; }
+.fl-item { display: flex; align-items: center; gap: 10px; width: 100%; padding: 8px 10px; border: 0; border-radius: 8px; background: transparent;
+  text-align: left; font-size: 13.5px; transition: background .12s; }
+.fl-item:hover, .fl-item:focus-visible { background: var(--bg-4); outline: none; }
+.fl-item .icon { color: var(--muted); }
+.fl-item span { flex: 1; }
+.fl-item small { color: var(--faint); font-size: 11.5px; padding: 1px 6px; border: 1px solid var(--line-2); border-radius: 5px; }
+.fl-sep { height: 1px; margin: 4px 6px; background: var(--line); }
+
+/* ---- shortcuts ---- */
+.fl-keys-wrap .fl-search { margin-top: 0; }
+.fl-keys { columns: 2 300px; column-gap: 28px; }
+.fl-key-group { break-inside: avoid; padding: 6px 0 10px; }
+.fl-key-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 5px 0; font-size: 13px; border-bottom: 1px solid var(--line); }
+.fl-key-row:last-child { border-bottom: 0; }
+.fl-combos { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+.fl-combo { display: inline-flex; gap: 3px; }
+.fl-or { color: var(--faint); font-size: 11px; }
+.fl-keys kbd { min-width: 22px; height: 22px; padding: 0 6px; display: inline-grid; place-items: center; border-radius: 5px;
+  background: var(--bg-4); border: 1px solid var(--line-2); border-bottom-width: 2px; font: 600 11.5px/1 var(--ui); color: var(--text); }
+
+/* ---- about ---- */
+.fl-about p { color: var(--muted); margin: 10px 0; }
+.fl-about-head { display: flex; align-items: center; gap: 12px; }
+.fl-about-head .logo { width: 40px; height: 40px; border-radius: 12px; }
+.fl-about-head b { font-size: 16px; }
+.fl-about .sec-title { margin-top: 16px; }
+.fl-link { display: inline-flex; align-items: center; gap: 3px; color: var(--accent-2); text-decoration: none; }
+.fl-link:hover { text-decoration: underline; }
+.fl-licences { list-style: none; margin: 0; padding: 0; display: grid; gap: 1px; }
+.fl-licences li { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 7px 0; border-bottom: 1px solid var(--line); font-size: 13px; }
+.fl-licences li > div { min-width: 0; }
+.fl-licences .fl-link { white-space: nowrap; font-size: 12.5px; }
+
+/* ---- drop overlay ---- */
+.fl-drop { position: fixed; inset: 0; z-index: 85; display: grid; place-items: center; pointer-events: none;
+  background: rgba(10, 8, 20, .55); backdrop-filter: blur(2px); opacity: 0; transition: opacity .18s; }
+.fl-drop.show { opacity: 1; }
+.fl-drop::before { content: ""; position: absolute; inset: 14px; border: 2px dashed var(--accent-2); border-radius: 18px; }
+.fl-drop-card { display: grid; justify-items: center; gap: 6px; padding: 22px 30px; border-radius: 16px; background: var(--bg-2);
+  border: 1px solid var(--line-2); box-shadow: var(--shadow); transform: scale(.96); transition: transform .25s var(--spring); }
+.fl-drop.show .fl-drop-card { transform: none; }
+.fl-drop-card .icon { color: var(--accent-2); }
+.fl-drop-card span { color: var(--muted); font-size: 13px; }
+
+@keyframes fl-spin { to { transform: rotate(360deg); } }
+@keyframes fl-in { from { opacity: 0; transform: translateY(-3px); } to { opacity: 1; transform: none; } }
+
+/* Pages choice (multi-page designs) */
+.fl-seg { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 3px; border-radius: 10px; background: var(--bg-2); border: 1px solid var(--line); }
+.fl-seg-btn { height: 30px; border: 0; border-radius: 7px; background: transparent; color: var(--muted); font-size: 12.5px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: background .15s, color .15s; }
+.fl-seg-btn:hover { color: var(--text); }
+.fl-seg-btn.on { background: var(--bg-4); color: var(--text); box-shadow: 0 0 0 1px rgba(255, 46, 126, .5); }
+.fl-page-note { display: flex; gap: 6px; align-items: flex-start; color: var(--cyan); }
+.fl-page-note .icon { margin-top: 2px; }
+.fl-mode { display: grid; grid-template-columns: repeat(3, 1fr); }
+
+/* Resize: one size / many sizes */
+.fl-resize > .fl-seg { margin-bottom: 10px; }
+.fl-resize[data-tab="one"] .fl-tab-many, .fl-resize[data-tab="many"] .fl-tab-one { display: none; }
+.fl-resize .fl-search { margin: 8px 0; }
+.fl-tab-many .fl-note { margin: 0 0 8px; }
+.fl-row { display: flex; gap: 6px; align-items: center; }
+.fl-check { flex: none; display: grid; place-items: center; width: 18px; height: 18px; border-radius: 5px; border: 1.5px solid var(--line-2); color: #fff; }
+.fl-size.on .fl-check { background: var(--accent); border-color: var(--accent); }
+.fl-many-done { display: grid; gap: 2px; margin-top: 10px; }
+.fl-many-done:empty { display: none; }
+.fl-many-item { display: flex; align-items: center; gap: 10px; padding: 7px 8px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg-2); text-align: left; }
+.fl-many-item:hover { border-color: var(--accent); }
+.fl-tab-one .fl-sec { margin-top: 8px; }
+.fl-resize:has(.fl-many-item) .fl-size-list { max-height: min(170px, 22vh); }
+.fl-many-done { max-height: min(220px, 28vh); overflow-y: auto; }
+.fl-seg:has(> :nth-child(3)) { grid-template-columns: repeat(3, 1fr); }
+
+/* Download v0.5: 1×/2×/4×, picked pages, size estimate, Copy as image */
+.fl-download .fl-types { row-gap: 10px; }
+/* A long popover scrolls; the Download and Copy buttons stay in view at the bottom. */
+.popover.fl-pop:has(.fl-download) { max-height: calc(100vh - 72px); overflow-y: auto; overscroll-behavior: contain; padding-bottom: 0; }
+.fl-download { padding-bottom: 12px; }
+.fl-pages { display: flex; flex-wrap: wrap; gap: 4px; }
+.fl-pages[hidden] { display: none; }
+.fl-page { min-width: 32px; height: 30px; padding: 0 8px; border-radius: 7px; border: 1px solid var(--line-2); background: var(--bg-3);
+  color: var(--muted); font-size: 12.5px; font-weight: 600; transition: background .15s, color .15s, border-color .15s, transform .18s var(--spring); }
+.fl-page:hover { color: var(--text); background: var(--bg-4); }
+.fl-page:active { transform: scale(.94); }
+.fl-page.on { color: var(--text); border-color: var(--accent); background: rgba(255, 46, 126, .16); }
+.fl-page:focus-visible, .fl-seg-btn:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 1px; }
+.fl-seg-btn:disabled { opacity: .35; cursor: not-allowed; }
+.fl-note[hidden] { display: none; }
+.fl-estimate { display: flex; align-items: center; gap: 6px; min-height: 22px; margin-top: 10px; font-size: 12.5px; color: var(--muted);
+  transition: opacity .2s; }
+.fl-estimate b { color: var(--text); font-weight: 600; }
+.fl-estimate.busy { opacity: .5; }
+.fl-actions { position: sticky; bottom: 0; z-index: 1; display: grid; grid-template-columns: 1fr auto; gap: 8px; margin-top: 8px;
+  padding: 8px 0 4px; background: rgba(24, 18, 28, 0.98); box-shadow: 0 -10px 12px -6px rgba(24, 18, 28, 0.98); }
+.fl-actions .fl-go { margin-top: 0; }
+.fl-copy { height: 40px; gap: 6px; padding: 0 14px; }
+
+/* ==== polish pass (28 Oct 2026): tiles, menus, loaders, empty states ==== */
+/* Export format tiles: lift on hover, a lit ring when picked, the icon pops when chosen. */
+.fl-type { transition: border-color var(--dur-1) var(--ease-out), background-color var(--dur-1) var(--ease-out), color var(--dur-1) var(--ease-out),
+  box-shadow var(--dur-2) var(--ease-out), transform var(--dur-2) var(--spring); }
+.fl-type .icon { transition: transform var(--dur-2) var(--spring), color var(--dur-1) var(--ease-out); }
+.fl-type:hover { transform: translateY(-2px); border-color: rgba(255, 230, 240, .28); box-shadow: 0 10px 18px -12px #000; }
+.fl-type:hover .icon { transform: translateY(-1px) scale(1.1); color: var(--text); }
+.fl-type:active { transform: translateY(0) scale(.96); }
+.fl-type.on { box-shadow: 0 0 0 1px var(--accent) inset, 0 0 20px -6px rgba(255, 46, 126, .75); }
+.fl-type.on:hover { border-color: var(--accent); }
+.fl-type.on .icon { color: var(--accent-2); animation: oc-done var(--dur-3) var(--spring); }
+.fl-type:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 2px; }
+.fl-tag { box-shadow: 0 2px 8px -2px rgba(255, 46, 126, .7); }
+.fl-options { animation: oc-fade-up var(--dur-2) var(--ease-out) both; }
+.fl-seg-btn.on { background: var(--bg-4); box-shadow: 0 0 0 1px rgba(255, 46, 126, .6), 0 0 12px -4px rgba(255, 46, 126, .7); }
+
+/* Progress: a lit pink bar with a light sweeping along it while it works. */
+.fl-bar { height: 4px; border-radius: 4px; }
+.fl-bar i { position: relative; overflow: hidden; border-radius: inherit; box-shadow: 0 0 10px rgba(255, 46, 126, .6); }
+.fl-bar.show i::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, transparent 30%, rgba(255, 255, 255, .5) 50%, transparent 70%);
+  background-size: 200% 100%; animation: oc-shimmer 1.2s linear infinite; }
+.fl-go.busy { box-shadow: 0 0 0 1px rgba(255, 46, 126, .5), 0 0 22px -6px rgba(255, 46, 126, .8); }
+.fl-go.busy .icon { animation: oc-spin .9s linear infinite; }
+
+/* Menu rows: the icon lights up with the row. */
+.fl-menu { gap: 2px; }
+.fl-item { transition: background-color var(--dur-1) var(--ease-out), color var(--dur-1) var(--ease-out); }
+.fl-item .icon { transition: color var(--dur-1) var(--ease-out), transform var(--dur-2) var(--spring); }
+.fl-item:hover .icon, .fl-item:focus-visible .icon { color: var(--accent-2); transform: scale(1.1); }
+.fl-item:focus-visible { box-shadow: inset 0 0 0 1px rgba(255, 46, 126, .55); }
+.fl-size { transition: background-color var(--dur-1) var(--ease-out), border-color var(--dur-1) var(--ease-out); }
+.fl-size:focus-visible { outline: 2px solid var(--accent-2); outline-offset: -2px; }
+.fl-check { transition: background-color var(--dur-1) var(--ease-out), border-color var(--dur-1) var(--ease-out); }
+.fl-size.on .fl-check { animation: oc-done var(--dur-3) var(--spring); }
+.fl-many-done > * { animation: oc-fade-up var(--dur-3) var(--ease-out) backwards; }
+.fl-many-item { transition: border-color var(--dur-1) var(--ease-out), transform var(--dur-2) var(--spring); }
+.fl-many-item:hover { transform: translateY(-1px); }
+
+/* Empty states: a friendly icon and a line, not a blank box. */
+.fl-empty { display: grid; justify-items: center; gap: 6px; padding: 18px 12px; margin: 4px 0; border: 1px dashed var(--line-2);
+  border-radius: var(--radius-sm); background: rgba(255, 255, 255, .02); color: var(--muted); font-size: 12.5px; line-height: 1.45;
+  animation: oc-fade-in var(--dur-2) var(--ease-out) both; }
+.fl-empty .icon { color: var(--accent-2); opacity: .85; }
+.fl-keys .fl-empty { column-span: all; }
+
+/* Drop overlay: the dashed frame breathes in with the card. */
+.fl-drop::before { transform: scale(1.02); transition: transform var(--dur-3) var(--ease-out); }
+.fl-drop.show::before { transform: none; }
+.fl-drop-card { box-shadow: var(--shadow), 0 0 50px -18px rgba(255, 46, 126, .7); }

@@ -1,0 +1,36 @@
+/* Share menu and review comment pins. Prefix sh-. */
+.sh-btn { height: 34px; padding: 0 12px; }
+.sh-pop { padding: 8px; }
+.sh-menu { width: 330px; display: grid; gap: 2px; }
+.sh-head { margin: 4px 8px 6px; font-size: 12px; color: var(--faint); }
+.sh-item { display: flex; align-items: flex-start; gap: 10px; width: 100%; padding: 9px 10px; border: 0; border-radius: 9px; background: transparent;
+  text-align: left; transition: background .15s; }
+.sh-item:hover, .sh-item:focus-visible { background: var(--bg-4); }
+.sh-ico { width: 32px; height: 32px; flex: none; display: grid; place-items: center; border-radius: 8px; background: var(--bg-3); color: var(--accent-2);
+  box-shadow: 0 0 0 1px var(--line-2) inset; }
+.sh-txt { display: grid; gap: 1px; min-width: 0; }
+.sh-txt b { font-size: 13.5px; font-weight: 600; }
+.sh-txt small { font-size: 12px; color: var(--faint); line-height: 1.35; }
+.sh-sep { height: 1px; margin: 4px 6px; background: var(--line-2); }
+
+.sh-pins { position: absolute; inset: 0; pointer-events: none; z-index: 4; overflow: hidden; }
+.sh-pin { position: absolute; width: 28px; height: 28px; margin: -34px 0 0 -14px; padding: 0; border: 2px solid #fff; border-radius: 50% 50% 50% 2px;
+  background: var(--accent); color: #fff; font: 800 12px var(--ui); display: grid; place-items: center; transform: rotate(-45deg);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, .55), 0 0 18px -4px rgba(255, 46, 126, .9); pointer-events: auto; transition: transform .18s var(--spring); }
+.sh-pin span { transform: rotate(45deg); }
+.sh-pin:hover { transform: rotate(-45deg) scale(1.12); }
+.sh-pin.done { background: var(--bg-4); color: var(--ok); box-shadow: 0 4px 14px rgba(0, 0, 0, .55); }
+.sh-note { width: 260px; display: grid; gap: 6px; }
+.sh-note-head { display: flex; align-items: center; gap: 8px; font-size: 12.5px; }
+.sh-note-head b { width: 22px; height: 22px; border-radius: 50%; background: var(--accent); color: #fff; display: grid; place-items: center; font-size: 11px; }
+.sh-note-head small { margin-left: auto; color: var(--faint); }
+.sh-note p { margin: 0; font-size: 13.5px; line-height: 1.45; white-space: pre-wrap; word-break: break-word; }
+
+/* ---- polish pass (28 Oct 2026) ---- */
+.sh-item { transition: background-color var(--dur-1) var(--ease-out); }
+.sh-ico { transition: background-color var(--dur-1) var(--ease-out), color var(--dur-1) var(--ease-out), box-shadow var(--dur-2) var(--ease-out),
+  transform var(--dur-2) var(--spring); }
+.sh-item:hover .sh-ico, .sh-item:focus-visible .sh-ico { background: var(--accent); color: #fff; transform: rotate(-4deg) scale(1.05);
+  box-shadow: 0 0 16px -4px rgba(255, 46, 126, .8); }
+.sh-item:focus-visible { outline: none; box-shadow: inset 0 0 0 1px rgba(255, 46, 126, .55); }
+.sh-note { animation: oc-fade-up var(--dur-2) var(--ease-out) both; }

@@ -1,0 +1,73 @@
+/* The selection toolbar's controls: hover, press and toggle states, the "More tools" tray
+   (tbfit.js) and the pop-in of the toolbar's own popovers. The bar itself lives in studio.css. */
+
+/* ---- buttons in the bar ---- */
+.ctx-toolbar .ibtn, .ctx-toolbar .el-tbtn, .ctx-toolbar .btn.small { position: relative; }
+.ctx-toolbar :is(.ibtn, .el-tbtn:not(.accent)):hover:not(:disabled) { background: var(--bg-4); color: var(--text); box-shadow: inset 0 0 0 1px var(--line-2); }
+.ctx-toolbar .el-tbtn { transition: background var(--dur-1) var(--ease-out), color var(--dur-1) var(--ease-out), box-shadow var(--dur-2) var(--ease-out),
+  transform var(--dur-1) var(--ease-out), filter var(--dur-1) var(--ease-out); }
+.ctx-toolbar .el-tbtn.on { box-shadow: inset 0 0 0 1px rgba(255, 46, 126, .5), 0 0 14px -5px rgba(255, 46, 126, .8); }
+.ctx-toolbar .el-tbtn.accent { box-shadow: 0 0 0 1px rgba(255, 120, 170, .4) inset, 0 6px 18px -8px rgba(255, 46, 126, .9); }
+.ctx-toolbar .ibtn.on, .ctx-toolbar .ibtn[aria-pressed="true"] {
+  background: linear-gradient(180deg, rgba(255, 46, 126, .28), rgba(255, 46, 126, .16)); color: var(--accent-2);
+  box-shadow: inset 0 0 0 1px rgba(255, 46, 126, .5), 0 0 14px -5px rgba(255, 46, 126, .8); }
+.ctx-toolbar .ibtn.on:hover { background: linear-gradient(180deg, rgba(255, 46, 126, .34), rgba(255, 46, 126, .2)); }
+.ctx-toolbar .btn.small.ghost:hover:not(:disabled) { background: var(--bg-4); box-shadow: inset 0 0 0 1px var(--line-2); }
+.ctx-toolbar .ibtn .icon, .ctx-toolbar .btn .icon { transition: transform var(--dur-2) var(--ease-out); }
+.ctx-toolbar .ibtn:hover:not(:disabled) .icon, .ctx-toolbar .btn:hover:not(:disabled) .icon { transform: translateY(-1px); }
+.ctx-toolbar .color-btn { transition: border-color var(--dur-1) var(--ease-out), box-shadow var(--dur-2) var(--ease-out), transform var(--dur-1) var(--ease-out); }
+.ctx-toolbar .color-btn:hover { border-color: var(--accent-2); box-shadow: 0 0 0 3px rgba(167, 139, 250, .18); }
+.ctx-toolbar .ar-del:hover:not(:disabled) { color: #ff6b8b; background: rgba(255, 70, 110, .14); box-shadow: inset 0 0 0 1px rgba(255, 70, 110, .35); }
+
+/* Group separators: a soft fading line rather than a hard border. */
+.ctx-toolbar .tgroup + .tgroup { border-left-color: transparent; position: relative; }
+.ctx-toolbar .tgroup + .tgroup::before { content: ""; position: absolute; left: -1px; top: 6px; bottom: 6px; width: 1px;
+  background: linear-gradient(180deg, transparent, var(--line-2) 25%, var(--line-2) 75%, transparent); pointer-events: none; }
+
+/* Labelled arrange buttons collapse to icons with the rest of the bar. */
+.ctx-toolbar.compact .ar-tbtn > span, .ctx-toolbar.compact .el-tbtn.text:not(.accent) > span { display: none; }
+.ctx-toolbar.compact .el-tbtn.text:not(.accent) { gap: 0; }
+
+/* ---- "More tools" (tbfit.js) ---- */
+.ctx-toolbar.tb-folded { overflow: visible; }
+.tb-more { position: relative; }
+.tb-more-btn.has-on::after { content: ""; position: absolute; top: 6px; right: 6px; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--accent); box-shadow: 0 0 6px var(--accent); }
+.tb-more.open > .tb-more-btn { background: rgba(255, 46, 126, .2); color: var(--accent-2); box-shadow: inset 0 0 0 1px rgba(255, 46, 126, .45); }
+.tb-more-btn .icon { transition: transform var(--dur-2) var(--ease-out); }
+.tb-more.open > .tb-more-btn .icon { transform: rotate(90deg); }
+
+.tb-more-tray { display: none; position: absolute; top: calc(100% + 11px); right: -6px; z-index: 20; min-width: 210px;
+  max-height: min(70vh, 520px); overflow-y: auto; padding: 6px; border-radius: 14px; background: rgba(24, 18, 28, .98);
+  border: 1px solid var(--line-2); box-shadow: var(--shadow), 0 0 0 1px rgba(0, 0, 0, .4), 0 -1px 0 rgba(255, 46, 126, .35) inset;
+  transform-origin: top right; scrollbar-width: thin; scrollbar-color: var(--bg-4) transparent; }
+.tb-more.open > .tb-more-tray { display: grid; gap: 2px; }
+.tb-more-sec { display: grid; gap: 2px; }
+.tb-more-sec + .tb-more-sec { margin-top: 3px; padding-top: 5px; border-top: 1px solid var(--line); }
+
+/* Every folded control becomes a full-width row: icon, then its name. */
+.tb-more-sec > button, .ctx-toolbar.compact .tb-more-sec > .btn {
+  display: flex; align-items: center; justify-content: flex-start; gap: 10px; width: 100%; height: 34px; padding: 0 10px;
+  border: 0; border-radius: 8px; background: transparent; font-size: 13px; text-align: left; white-space: nowrap; }
+.tb-more-sec > button:hover:not(:disabled) { background: var(--bg-4); box-shadow: none; }
+.tb-more-sec > button.on, .tb-more-sec > button[aria-pressed="true"] { background: rgba(255, 46, 126, .16); color: var(--accent-2); box-shadow: none; }
+.tb-more-sec > button > span { display: inline !important; font-size: 13px; }
+.ctx-toolbar.compact .tb-more-sec > .el-tbtn.text { gap: 10px; }
+.tb-more-label { flex: 1; color: inherit; }
+.tb-more-sec > .color-btn { padding: 0 10px 0 7px; }
+.tb-more-sec > .color-btn .swatch-fill { flex: none; width: 22px; height: 22px; border-radius: 6px; box-shadow: inset 0 0 0 1px var(--line-2); }
+.tb-more-sec .tx-hl-bar { left: 10px; right: auto; width: 18px; bottom: 5px; }
+.tb-more-sec > :not(button) { padding: 2px 4px; }
+.tb-more-sec .el-bar-label { display: inline; }
+
+/* ---- the toolbar's own popovers pop their content in ---- */
+.popover:is(.tx-pop, .ar-pop, .el-popover, .mg-pop, .ch-pop) > * { animation: oc-fade-in var(--dur-2) var(--ease-out) both; }
+.popover:is(.tx-pop, .ar-pop, .mg-pop) :is(.tx-case-opt, .tx-weight-opt, .ar-mitem, .ar-tile) {
+  animation: oc-fade-up var(--dur-2) var(--ease-out) both; }
+.popover:is(.tx-pop, .ar-pop, .mg-pop) :is(.tx-case-opt, .tx-weight-opt, .ar-mitem, .ar-tile):nth-child(2) { animation-delay: calc(var(--stagger) * 1); }
+.popover:is(.tx-pop, .ar-pop, .mg-pop) :is(.tx-case-opt, .tx-weight-opt, .ar-mitem, .ar-tile):nth-child(3) { animation-delay: calc(var(--stagger) * 2); }
+.popover:is(.tx-pop, .ar-pop, .mg-pop) :is(.tx-case-opt, .tx-weight-opt, .ar-mitem, .ar-tile):nth-child(4) { animation-delay: calc(var(--stagger) * 3); }
+.popover:is(.tx-pop, .ar-pop, .mg-pop) :is(.tx-case-opt, .tx-weight-opt, .ar-mitem, .ar-tile):nth-child(5) { animation-delay: calc(var(--stagger) * 4); }
+.popover:is(.tx-pop, .ar-pop, .mg-pop) :is(.tx-case-opt, .tx-weight-opt, .ar-mitem, .ar-tile):nth-child(n+6) { animation-delay: calc(var(--stagger) * 5); }
+.tx-size-opt { transition: background var(--dur-1) var(--ease-out), transform var(--dur-1) var(--ease-out); }
+.tx-size-opt:hover { transform: translateY(-1px); }

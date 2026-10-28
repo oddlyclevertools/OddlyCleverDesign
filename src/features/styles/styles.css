@@ -1,0 +1,78 @@
+/* Styles feature (prefix st-). Uses the shared tokens from app.css. */
+.st-panel { display: grid; gap: 4px; }
+.st-panel > *, .st-ufont, .st-ufont span, .st-kit-row, .st-sec-head { min-width: 0; }
+.st-lead { display: flex; gap: 8px; align-items: flex-start; margin: 0 0 6px; padding: 9px 11px; border-radius: var(--radius);
+  background: var(--bg-3); border: 1px solid var(--line); color: var(--muted); font-size: 12.5px; line-height: 1.4; }
+.st-lead .icon { flex: none; color: var(--accent-2); margin-top: 1px; }
+.st-sec { padding: 10px 0 14px; border-bottom: 1px solid var(--line); }
+.st-sec:last-child { border-bottom: 0; }
+.st-sec-head { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.st-sec-head .sec-title { margin: 0; }
+.st-sec-head .grow, .st-kit-row .grow { flex: 1; }
+.st-hint { margin: 0 0 10px; font-size: 12px; color: var(--faint); }
+.st-faint { color: var(--faint); font-size: 11.5px; }
+.st-loading { color: var(--faint); font-size: 12px; padding: 8px 0; }
+.st-free { padding: 2px 7px; border-radius: 99px; font-size: 10.5px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase;
+  color: var(--ok); border: 1px solid currentColor; opacity: .85; }
+.st-wide { width: 100%; justify-content: center; margin-top: 6px; }
+.st-starter p { margin: 0 0 4px; color: var(--muted); font-size: 12.5px; line-height: 1.45; }
+.st-link { margin-top: 8px; padding: 0; border: 0; background: none; color: var(--faint); font-size: 11.5px; text-decoration: underline; }
+.st-link:hover { color: var(--danger); }
+
+/* brand kit */
+.st-kit { display: grid; gap: 8px; }
+.st-kit-row { display: flex; align-items: center; gap: 8px; margin-top: 4px; }
+.st-kit-row b { font-size: 12.5px; }
+.st-kit-colors { display: flex; flex-wrap: wrap; gap: 6px; }
+.st-kit-sw, .st-kit-add { position: relative; width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--line-2); }
+.st-kit-add { display: grid; place-items: center; padding: 0; background: var(--bg-3); color: var(--muted); border-style: dashed; }
+.st-kit-add:hover { color: var(--text); border-color: var(--accent); }
+.st-x { position: absolute; top: -4px; right: -4px; display: grid; place-items: center; width: 17px; height: 17px; padding: 0; border-radius: 50%;
+  border: 1px solid var(--line-2); background: var(--bg-2); color: var(--text); opacity: 0; transform: scale(.7);
+  transition: opacity .15s, transform .18s var(--spring); }
+.st-kit-sw:hover .st-x, .st-logo:hover .st-x, .st-x:focus-visible { opacity: 1; transform: none; }
+.st-kit-fonts { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.st-kit-font { display: grid; gap: 2px; text-align: left; padding: 7px 10px; border-radius: var(--radius-sm); border: 1px solid var(--line-2);
+  background: var(--bg-3); color: var(--text); font-size: 15px; overflow: hidden; transition: border-color .15s; }
+.st-kit-font small { font: 600 10px/1 var(--ui); color: var(--faint); text-transform: uppercase; letter-spacing: .06em; }
+.st-kit-font span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.st-kit-font:hover { border-color: var(--accent); }
+.st-logos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.st-logo { position: relative; }
+.st-logo-img, .st-logo-add { width: 100%; aspect-ratio: 1.4; padding: 6px; border-radius: var(--radius-sm); border: 1px solid var(--line-2);
+  background: repeating-conic-gradient(var(--bg-4) 0 25%, var(--bg-3) 0 50%) 0 0 / 14px 14px; display: grid; place-items: center;
+  transition: border-color .15s, transform .18s var(--spring); }
+.st-logo-img img { max-width: 100%; max-height: 100%; object-fit: contain; }
+.st-logo-img:hover { border-color: var(--accent); transform: translateY(-1px); }
+.st-logo-add { background: var(--bg-3); border-style: dashed; color: var(--muted); gap: 2px; align-content: center; }
+.st-logo-add:hover { color: var(--text); border-color: var(--accent); }
+.st-ufonts { margin-top: 10px; }
+.st-ufont-list { display: grid; gap: 2px; margin-top: 6px; }
+.st-ufont { display: flex; align-items: center; justify-content: space-between; gap: 6px; padding: 2px 2px 2px 10px; border-radius: var(--radius-sm); background: var(--bg-3); }
+.st-ufont span { flex: 1; min-width: 0; font-size: 17px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.st-ufont .ibtn { width: 28px; height: 28px; }
+
+/* palettes */
+.st-shuffle .icon { transition: transform .3s var(--spring); }
+.st-shuffle:hover .icon { transform: rotate(-12deg) scale(1.08); }
+.st-sec > .st-faint { display: block; min-height: 15px; margin: -4px 0 6px; }
+.st-search { width: 100%; margin-bottom: 8px; padding: 7px 10px; border-radius: var(--radius-sm); border: 1px solid var(--line-2); background: var(--bg); color: var(--text); }
+.st-search:focus { border-color: var(--accent); outline: none; }
+.st-pal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.st-pal { display: grid; gap: 1px; padding: 0 0 7px; text-align: left; border-radius: var(--radius); border: 1px solid var(--line-2);
+  background: var(--bg-3); color: var(--text); overflow: hidden; transition: transform .18s var(--spring), border-color .15s, box-shadow .2s; }
+.st-pal:hover, .st-pal:focus-visible { transform: translateY(-2px); border-color: var(--accent-2); box-shadow: 0 10px 22px -14px #000; }
+.st-pal.on { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+.st-stripes { display: flex; height: 38px; margin-bottom: 5px; }
+.st-stripes i { flex: 1; }
+.st-stripes i:first-child { flex: 1.8; }
+.st-pal-name { padding: 0 9px; font-size: 12.5px; font-weight: 600; }
+.st-pal small { padding: 0 9px; color: var(--faint); font-size: 11px; }
+
+/* pairings */
+.st-pair-grid { display: grid; gap: 6px; }
+.st-pair { display: grid; gap: 3px; text-align: left; padding: 10px 12px; border-radius: var(--radius); border: 1px solid var(--line-2);
+  background: var(--bg-3); color: var(--text); transition: transform .18s var(--spring), border-color .15s; }
+.st-pair:hover, .st-pair:focus-visible { transform: translateX(2px); border-color: var(--accent-2); }
+.st-pair-head { font-size: 22px; line-height: 1.1; }
+.st-pair-body { font-size: 12.5px; color: var(--muted); }

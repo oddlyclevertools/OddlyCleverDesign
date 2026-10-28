@@ -1,0 +1,16 @@
+{
+  "name": "oddlyclever-design-connector",
+  "version": "0.1.0",
+  "description": "Lets Claude (and any MCP client) build designs in OddlyClever Design running in your browser.",
+  "license": "GPL-3.0-or-later",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "oddlyclever-design-connector": "./index.mjs"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.2",
+    "ws": "^8.22.0",
+    "zod": "^4.6.7"
+  }
+}

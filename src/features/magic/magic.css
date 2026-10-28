@@ -1,0 +1,122 @@
+/* Magic photo edits: the drawing layer, the mode bars, the menu, the shimmer and the download box. */
+.mg-overlay { position: absolute; left: 0; top: 0; z-index: 4; touch-action: none; }
+.stage:has(.mg-bar) > .ctx-toolbar { opacity: 0; pointer-events: none; }
+
+.mg-bar { position: absolute; top: 6px; left: 50%; translate: -50% 0; z-index: 12; display: grid; gap: 6px;
+  width: max-content; max-width: calc(100% - 24px); padding: 8px 10px; border-radius: 14px; outline: none;
+  background: var(--glass); backdrop-filter: blur(12px); border: 1px solid var(--line-2);
+  box-shadow: var(--shadow), 0 -1px 0 rgba(255, 46, 126, .45) inset;
+  opacity: 0; transform: translateY(-6px); transition: opacity .16s, transform .22s var(--ease); }
+.mg-bar.show { opacity: 1; transform: none; }
+.mg-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.mg-row.end { justify-content: flex-end; }
+.mg-title { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; font-size: 14px; padding-right: 4px; }
+.mg-title .icon { color: var(--accent-2); }
+.mg-hint { font-size: 12px; color: var(--muted); margin-right: auto; max-width: 420px; }
+.mg-cost { font-size: 11.5px; font-weight: 600; padding: 3px 9px; border-radius: 999px; white-space: nowrap; }
+.mg-cost.free, .mg-badge.free { background: rgba(74, 222, 128, .14); color: #8af0b0; border: 1px solid rgba(74, 222, 128, .35); }
+.mg-cost.paid, .mg-badge.paid { background: rgba(255, 200, 61, .12); color: var(--gold); border: 1px solid rgba(255, 200, 61, .35); }
+.mg-size { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); padding: 0 4px; }
+.mg-range { width: 120px; accent-color: var(--accent); }
+.mg-range.mg-wide { width: 200px; }
+.mg-num { min-width: 26px; text-align: right; font-variant-numeric: tabular-nums; color: var(--text); }
+.mg-btn { display: inline-flex; align-items: center; gap: 5px; height: 30px; min-width: 30px; padding: 0 8px; justify-content: center;
+  border-radius: var(--radius-sm); border: 1px solid transparent; background: transparent; color: var(--text); font: inherit; font-size: 13px; cursor: pointer;
+  transition: background .15s, color .15s; }
+.mg-btn:hover:not(:disabled) { background: var(--bg-4); }
+.mg-btn.on { background: rgba(143, 227, 255, .16); color: var(--cyan); border-color: rgba(143, 227, 255, .35); }
+.mg-btn:disabled { opacity: .4; cursor: default; }
+.mg-btn:focus-visible, .mg-chip:focus-visible, .mg-item:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 1px; }
+.mg-prompt { flex: 1; min-width: min(460px, 70vw); height: 34px; padding: 0 12px; border-radius: var(--radius-sm); border: 1px solid var(--line-2);
+  background: var(--bg-2); color: var(--text); font: inherit; font-size: 14px; }
+.mg-prompt:focus { outline: none; border-color: var(--accent); box-shadow: var(--glow-pink); }
+.mg-chip { height: 30px; padding: 0 11px; border-radius: 999px; border: 1px solid var(--line-2); background: var(--bg-3); color: var(--text);
+  font: inherit; font-size: 13px; cursor: pointer; transition: background .15s, border-color .15s, transform .2s var(--spring); }
+.mg-chip:hover:not(:disabled) { background: var(--bg-4); }
+.mg-chip.on { background: rgba(255, 46, 126, .22); border-color: var(--accent); color: #fff; transform: translateY(-1px); }
+.mg-chip:disabled { opacity: .35; cursor: default; }
+
+/* toolbar button and menu */
+.el-tbtn.mg-tbtn { background: linear-gradient(135deg, rgba(255, 46, 126, .25), rgba(143, 227, 255, .18)); }
+.el-tbtn.mg-tbtn.edited::after { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--gold); margin-left: 2px; }
+.mg-pop { padding: 8px; }
+.mg-menu { display: grid; gap: 2px; width: 330px; }
+.mg-menu-head { margin: 2px 6px 6px; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--faint); font-weight: 700; }
+.mg-menu-note { margin: 4px 6px; font-size: 12px; color: var(--gold); }
+.mg-menu-sep { height: 1px; background: var(--line-2); margin: 4px 2px; }
+.mg-item { display: grid; grid-template-columns: 32px 1fr auto; align-items: center; gap: 8px; padding: 7px 8px; border-radius: 10px; border: 0;
+  background: transparent; color: var(--text); font: inherit; text-align: left; cursor: pointer; transition: background .15s; }
+.mg-item:hover:not(:disabled) { background: var(--bg-3); }
+.mg-item:disabled { opacity: .4; cursor: default; }
+.mg-item-icon { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 9px; background: var(--bg-3); color: var(--accent-2); }
+.mg-item-text { display: grid; gap: 1px; }
+.mg-item-text b { font-size: 13.5px; }
+.mg-item-text small { font-size: 12px; color: var(--muted); }
+.mg-badge { font-size: 10.5px; font-weight: 700; padding: 2px 7px; border-radius: 999px; white-space: nowrap; }
+
+/* working pill */
+.mg-working { position: absolute; left: 50%; top: 12px; translate: -50% 0; z-index: 12; display: inline-flex; align-items: center; gap: 10px;
+  padding: 8px 14px; border-radius: 999px; background: var(--glass); border: 1px solid var(--line-2); box-shadow: var(--shadow);
+  font-size: 13px; font-weight: 600; opacity: 0; transform: translateY(-4px); transition: opacity .16s, transform .2s var(--ease); }
+.mg-working.show { opacity: 1; transform: none; }
+.mg-spin { width: 14px; height: 14px; border-radius: 50%; border: 2px solid rgba(255, 255, 255, .2); border-top-color: var(--accent); animation: mg-spin .8s linear infinite; }
+@keyframes mg-spin { to { transform: rotate(360deg); } }
+.stage:has(.mg-working) > .ctx-toolbar { opacity: 0; pointer-events: none; }
+
+/* model download */
+.mg-dl { display: grid; gap: 12px; min-width: min(420px, 80vw); }
+.mg-dl-bar { height: 10px; border-radius: 6px; background: rgba(255, 255, 255, .1); overflow: hidden; }
+.mg-dl-bar > i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, #ff2e7e, #ffc83d); transition: width .2s; }
+.mg-note { margin: 0; font-size: 13px; opacity: .85; }
+
+@media (prefers-reduced-motion: reduce) { .mg-bar, .mg-working, .mg-chip { transition: none; } .mg-spin { animation-duration: 2s; } }
+
+/* ---- polish: bar entrance, brush controls, loading states (shared with the cut-out touch-up) ---- */
+.mg-bar { transition: opacity var(--dur-2) var(--ease-out), transform var(--dur-3) var(--ease-out); transform: translateY(-8px) scale(.98); }
+.mg-bar.show { transform: none; }
+.mg-bar.show > .mg-row { animation: oc-fade-up var(--dur-3) var(--ease-out) both; }
+.mg-bar.show > .mg-row:nth-child(2) { animation-delay: calc(var(--stagger) * 2); }
+.mg-bar.show > .mg-row:nth-child(n+3) { animation-delay: calc(var(--stagger) * 4); }
+.mg-title .icon { filter: drop-shadow(0 0 6px rgba(167, 139, 250, .6)); }
+
+.mg-btn { transition: background var(--dur-1) var(--ease-out), color var(--dur-1) var(--ease-out), border-color var(--dur-1) var(--ease-out),
+  box-shadow var(--dur-2) var(--ease-out), transform var(--dur-1) var(--ease-out); }
+.mg-btn:hover:not(:disabled) { border-color: var(--line-2); }
+.mg-btn .icon { transition: transform var(--dur-2) var(--ease-out); }
+.mg-btn:hover:not(:disabled) .icon { transform: translateY(-1px); }
+.mg-btn.on { box-shadow: 0 0 14px -6px rgba(143, 227, 255, .9); }
+.mg-chip.on { box-shadow: 0 0 14px -5px rgba(255, 46, 126, .9); }
+
+/* Brush size and hardness sliders in the theme (thin gradient track, glowing thumb). */
+.mg-range { -webkit-appearance: none; appearance: none; height: 18px; background: transparent; cursor: pointer; }
+.mg-range::-webkit-slider-runnable-track { height: 4px; border-radius: 4px;
+  background: linear-gradient(90deg, rgba(255, 46, 126, .55), rgba(167, 139, 250, .35) 60%, rgba(255, 255, 255, .14)); }
+.mg-range::-moz-range-track { height: 4px; border-radius: 4px; background: rgba(255, 255, 255, .12); }
+.mg-range::-moz-range-progress { height: 4px; border-radius: 4px; background: linear-gradient(90deg, var(--accent), var(--accent-2)); }
+.mg-range::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; margin-top: -5px; border-radius: 50%; border: 2px solid #fff;
+  background: var(--accent); box-shadow: 0 0 0 3px rgba(255, 46, 126, .2), 0 2px 6px rgba(0, 0, 0, .5);
+  transition: transform var(--dur-1) var(--ease-out), box-shadow var(--dur-2) var(--ease-out); }
+.mg-range::-moz-range-thumb { width: 12px; height: 12px; border-radius: 50%; border: 2px solid #fff; background: var(--accent); }
+.mg-range:hover::-webkit-slider-thumb { transform: scale(1.15); box-shadow: 0 0 0 5px rgba(255, 46, 126, .22), 0 2px 6px rgba(0, 0, 0, .5); }
+.mg-range:active::-webkit-slider-thumb { transform: scale(1.25); }
+.mg-range:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 2px; border-radius: 4px; }
+
+/* Menu items lift their icon chip on hover. */
+.mg-item-icon { transition: transform var(--dur-2) var(--ease-out), box-shadow var(--dur-2) var(--ease-out), background var(--dur-2) var(--ease-out); }
+.mg-item:hover:not(:disabled) .mg-item-icon { transform: translateY(-1px) scale(1.05); background: rgba(167, 139, 250, .16);
+  box-shadow: 0 0 14px -6px rgba(167, 139, 250, .9); }
+
+/* Working pill: a glowing gradient ring spinner and a soft breathing border. */
+.mg-working { transition: opacity var(--dur-2) var(--ease-out), transform var(--dur-3) var(--ease-out);
+  box-shadow: var(--shadow), 0 0 0 1px rgba(255, 46, 126, .25), 0 0 24px -8px rgba(255, 46, 126, .7); }
+.mg-spin { border: 0; background: conic-gradient(from 0deg, transparent 0 25%, var(--accent) 60%, var(--accent-2) 100%);
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2.5px), #000 calc(100% - 2px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 2.5px), #000 calc(100% - 2px)); animation: oc-spin .8s linear infinite; }
+
+/* Download progress: the fill carries moving light stripes while it loads. */
+.mg-dl-bar, .co-bar { box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .06); }
+.mg-dl-bar > i, .co-bar > i { position: relative; overflow: hidden; border-radius: inherit; box-shadow: 0 0 12px -2px rgba(255, 46, 126, .7);
+  transition: width var(--dur-3) var(--ease-out); }
+.mg-dl-bar > i::after, .co-bar > i::after { content: ""; position: absolute; inset: 0;
+  background: linear-gradient(100deg, transparent 30%, rgba(255, 255, 255, .45) 50%, transparent 70%) 0 0 / 200% 100%;
+  animation: oc-shimmer 1.2s linear infinite; }

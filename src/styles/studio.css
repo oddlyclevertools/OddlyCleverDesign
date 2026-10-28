@@ -1,0 +1,278 @@
+/* The editor studio: a lit set (brick wall, neon spill, a glow behind the page), a header strip,
+   a floating tool dock at the bottom, drawers for panels and a floating selection toolbar. */
+
+/* A brick tile, drawn in SVG (ours). Kept very dark so the design on the page always wins. */
+.editor-view, .tp-set {
+  --bricks: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='60'%3E%3Crect width='120' height='60' fill='%23140c0f'/%3E%3Cg%3E%3Crect x='1' y='1' width='57' height='27' rx='2' fill='%23301719'/%3E%3Crect x='61' y='1' width='57' height='27' rx='2' fill='%23361a1b'/%3E%3Crect x='-29' y='31' width='57' height='27' rx='2' fill='%232b1517'/%3E%3Crect x='31' y='31' width='57' height='27' rx='2' fill='%23341a1c'/%3E%3Crect x='91' y='31' width='57' height='27' rx='2' fill='%232b1517'/%3E%3C/g%3E%3Cg fill='%23ffffff' opacity='.035'%3E%3Crect x='3' y='2' width='50' height='2'/%3E%3Crect x='63' y='2' width='50' height='2'/%3E%3Crect x='33' y='32' width='50' height='2'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* ---- editor layout ---- */
+.editor-view { flex-direction: column; position: relative; isolation: isolate;
+  background:
+    radial-gradient(ellipse 52% 46% at 50% 46%, rgba(255, 177, 92, .13), transparent 72%),
+    radial-gradient(ellipse 38% 46% at 0% 0%, rgba(255, 46, 126, .2), transparent 70%),
+    radial-gradient(ellipse 34% 40% at 100% 0%, rgba(143, 227, 255, .12), transparent 70%),
+    linear-gradient(180deg, rgba(12, 8, 14, .62) 0%, rgba(12, 8, 14, .8) 62%, rgba(9, 6, 11, .97) 86%),
+    var(--bricks) 0 0 / 120px 60px, #140c0f; }
+/* A soft vignette over the whole set. */
+.editor-view::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background: radial-gradient(ellipse 85% 80% at 50% 45%, transparent 55%, rgba(5, 3, 7, .7)); }
+
+/* Header strip: brand, undo/redo, the design name on a paper tag, the command search, actions. */
+.topbar { height: var(--top-h); flex: none; display: flex; align-items: center; gap: 10px; padding: 0 14px; position: relative; z-index: 20;
+  background: linear-gradient(180deg, rgba(10, 7, 12, .92), rgba(10, 7, 12, .55) 70%, rgba(10, 7, 12, 0)); }
+.top-left { flex: none; display: flex; align-items: center; gap: 6px; min-width: 0; }
+.top-gap { flex: 1 1 0; min-width: 0; }
+.top-right { flex: none; display: flex; align-items: center; justify-content: flex-end; gap: 6px; }
+.brand { display: flex; align-items: center; gap: 9px; color: var(--text); text-decoration: none; white-space: nowrap; margin-right: 6px;
+  border-radius: 12px; padding: 3px 8px 3px 3px; transition: background-color var(--dur-1) var(--ease-out); }
+.brand:hover { background: rgba(255, 255, 255, .04); }
+.brand b { color: var(--text); }
+.logo { position: relative; display: grid; place-items: center; width: 36px; height: 36px; flex: none; border-radius: 50%; overflow: hidden;
+  background: #1a1018; box-shadow: 0 0 0 2px var(--paper), 0 0 0 3.5px var(--ink), 0 0 18px -2px rgba(255, 46, 126, .7);
+  transition: transform var(--dur-3) var(--spring), box-shadow var(--dur-2) var(--ease-out); }
+.logo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.brand:hover .logo { transform: rotate(-8deg) scale(1.06); box-shadow: 0 0 0 2px var(--paper), 0 0 0 3.5px var(--ink), 0 0 26px 0 rgba(255, 46, 126, .85); }
+.brand .wm-clever { transition: text-shadow var(--dur-2) var(--ease-out); }
+.brand:hover .wm-clever { text-shadow: 0 0 2px #ff2e7e, 0 0 12px #ff2e7e, 0 0 30px rgba(255, 46, 126, .95); }
+.wordmark { display: inline-flex; align-items: baseline; gap: 1px; line-height: 1; }
+.wordmark .wm-odd { font: 400 17px/1 var(--display); letter-spacing: .02em; color: #fff;
+  text-shadow: 0 0 1px #000, 0 0 14px rgba(255, 200, 61, .45); }
+.wordmark .wm-clever { font: 400 19px/1 var(--script); color: #ffd1e2; margin-left: 2px; transform: translateY(2px) rotate(-6deg);
+  text-shadow: 0 0 2px #ff2e7e, 0 0 10px #ff2e7e, 0 0 22px rgba(255, 46, 126, .7); }
+.wordmark .wm-tag { align-self: center; margin-left: 8px; padding: 2px 5px 1px; font: 800 8.5px/1.2 var(--ui); letter-spacing: .18em;
+  color: var(--ink); background: var(--gold); border-radius: 2px; transform: rotate(3deg); }
+
+.top-mid { display: flex; align-items: center; gap: 4px; min-width: 0; flex: 0 1 auto; }
+.top-mid .name-tag { flex: 0 1 auto; }
+/* The design name is written on a paper tag. */
+.name-tag { position: relative; display: inline-flex; min-width: 0; margin-left: 8px; transform: rotate(-1.5deg); transition: transform var(--dur-2) var(--spring); }
+.name-tag::before { content: ""; position: absolute; left: 50%; top: -5px; width: 34px; height: 10px; translate: -50% 0; rotate: 4deg; z-index: 1;
+  background: rgba(255, 200, 61, .55); box-shadow: 0 1px 2px rgba(0, 0, 0, .2); pointer-events: none; }
+.name-tag:hover, .name-tag:focus-within { transform: rotate(0) translateY(-1px); }
+.doc-name { width: min(200px, 15vw); min-width: 110px; height: 32px; padding: 0 12px !important; border-radius: 3px !important;
+  background: var(--paper) !important; color: var(--ink) !important; border: 0 !important; font-weight: 700; font-size: 13.5px;
+  box-shadow: 0 3px 0 rgba(0, 0, 0, .45), 0 10px 20px -10px #000 !important; text-overflow: ellipsis; }
+.doc-name:focus { box-shadow: 0 3px 0 rgba(0, 0, 0, .45), 0 0 0 3px var(--accent) !important; }
+.save-state { color: var(--faint); font-size: 11.5px; white-space: nowrap; margin-left: 8px; display: inline-flex; align-items: center; gap: 5px; }
+.save-state:not(:empty)::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--ok); box-shadow: 0 0 8px var(--ok); }
+.top-actions { display: flex; align-items: center; gap: 6px; }
+.top-actions .btn:not(.primary) { background: rgba(30, 23, 36, .8); }
+
+/* The command search pill ("What do you want to do?"). */
+.cmd-pill { flex: 0 1 340px; min-width: 40px; display: inline-flex; align-items: center; gap: 10px; height: 38px; padding: 0 6px 0 13px;
+  border-radius: 999px; border: 1px solid rgba(255, 46, 126, .35); background: rgba(12, 8, 14, .78); color: var(--muted); font-size: 13.5px;
+  box-shadow: 0 0 0 4px rgba(255, 46, 126, .06), 0 10px 30px -14px rgba(255, 46, 126, .6);
+  transition: border-color var(--dur-1) var(--ease-out), box-shadow var(--dur-2) var(--ease-out), color var(--dur-1) var(--ease-out), transform var(--dur-1) var(--ease-out);
+  position: relative; overflow: hidden; isolation: isolate; }
+/* A sheen sweeps across the pill on hover. */
+.cmd-pill::after { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; transform: translateX(-110%);
+  background: linear-gradient(100deg, transparent 30%, rgba(255, 122, 169, .16) 50%, transparent 70%); }
+.cmd-pill:hover::after { transform: translateX(110%); transition: transform var(--dur-4) var(--ease-out); }
+.cmd-pill .icon { transition: transform var(--dur-2) var(--spring); }
+.cmd-pill:hover .icon { transform: scale(1.15) rotate(-10deg); }
+.cmd-pill:hover kbd { color: var(--text); border-color: rgba(255, 46, 126, .5); }
+.cmd-pill:hover { color: var(--text); border-color: rgba(255, 46, 126, .7); box-shadow: 0 0 0 4px rgba(255, 46, 126, .12), 0 10px 34px -12px rgba(255, 46, 126, .85); }
+.cmd-pill .icon { color: var(--accent-2); }
+.cmd-pill span { flex: 1; text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+kbd, .kbd { display: inline-flex; align-items: center; height: 22px; padding: 0 7px; border-radius: 6px; font: 600 11px/1 var(--ui); color: var(--muted);
+  background: var(--bg-3); border: 1px solid var(--line-2); border-bottom-width: 2px; white-space: nowrap;
+  transition: color var(--dur-1) var(--ease-out), border-color var(--dur-1) var(--ease-out); }
+.help-btn { width: 34px; height: 34px; border-radius: 50%; border: 0; display: grid; place-items: center; font: 400 16px/1 var(--display);
+  color: var(--ink); background: var(--gold); box-shadow: 0 0 0 2px rgba(0, 0, 0, .4), 0 6px 18px -6px rgba(255, 200, 61, .8);
+  transition: transform var(--dur-2) var(--spring), box-shadow var(--dur-2) var(--ease-out); flex: none; }
+.help-btn:hover { transform: rotate(-12deg) scale(1.08); box-shadow: 0 0 0 2px rgba(0, 0, 0, .4), 0 0 22px -2px rgba(255, 200, 61, .95); }
+.help-btn:active { transform: rotate(-12deg) scale(.94); }
+
+/* Header buttons: lift a pixel and glow pink on hover (translate, so the press squash still works). */
+.topbar :is(.btn, .ibtn) { transition: background-color var(--dur-1) var(--ease-out), border-color var(--dur-1) var(--ease-out), color var(--dur-1) var(--ease-out),
+  box-shadow var(--dur-2) var(--ease-out), translate var(--dur-2) var(--ease-out), transform var(--dur-1) var(--ease-out), filter var(--dur-1) var(--ease-out); }
+.topbar :is(.btn, .ibtn):not(:disabled):hover { translate: 0 -1px; }
+.topbar .btn:not(.primary):not(:disabled):hover, .topbar .ibtn:not(:disabled):hover { border-color: rgba(255, 46, 126, .45);
+  box-shadow: 0 0 0 1px rgba(255, 46, 126, .16), 0 8px 20px -10px rgba(255, 46, 126, .8); }
+.topbar :is(.btn, .ibtn) .icon { transition: transform var(--dur-2) var(--spring); }
+.topbar :is(.btn, .ibtn):not(:disabled):hover .icon { transform: scale(1.12); }
+.topbar :is(.btn, .ibtn):not(:disabled):active { translate: 0 0; }
+
+/* Workspace: the drawer and the stage. */
+.workspace { flex: 1; display: flex; min-height: 0; position: relative; }
+.panel { width: 0; flex: none; overflow: hidden; padding: 4px 0 12px; transition: width var(--dur-3) var(--ease-out); }
+.panel.open { width: calc(var(--panel-w) + 14px); }
+.panel-card { position: relative; width: var(--panel-w); height: 100%; margin-left: 14px; border-radius: 18px; overflow: hidden;
+  background: var(--glass); backdrop-filter: blur(14px) saturate(1.2); border: 1px solid var(--line-2); box-shadow: var(--shadow); }
+.panel-card::before { content: ""; position: absolute; left: 18px; right: 18px; top: 0; height: 2px; z-index: 2; border-radius: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent) 20%, var(--gold) 55%, var(--cyan) 85%, transparent);
+  box-shadow: 0 0 14px rgba(255, 46, 126, .6); opacity: .9; }
+.panel-close { position: absolute; top: 12px; right: 10px; z-index: 3; color: var(--muted); }
+.panel-close:hover { color: var(--text); background: rgba(255, 46, 126, .16); }
+.panel-close .icon { transition: transform var(--dur-2) var(--spring); }
+.panel-close:hover .icon { transform: rotate(90deg); }
+.panel-inner { width: var(--panel-w); height: 100%; overflow-y: auto; padding: 18px 16px 28px; overscroll-behavior: contain; }
+
+/* Drawer motion (shell.js adds the classes). A fresh drawer slides out from the dock side; switching
+   tools slides the new content in from the side of the new tool; closing fades the card as it folds.
+   Only translate/scale/opacity move, so the features' own transforms are never touched. */
+@keyframes pa-card-in { from { opacity: 0; translate: -18px 0; scale: .98; } }
+@keyframes pa-card-out { to { opacity: 0; translate: -14px 0; scale: .985; } }
+@keyframes pa-from-right { from { opacity: 0; translate: 16px 0; } }
+@keyframes pa-from-left { from { opacity: 0; translate: -16px 0; } }
+@keyframes pa-rise { from { opacity: 0; translate: 0 10px; } }
+@keyframes pa-label-drop { from { opacity: 0; translate: 0 -10px; scale: .92; } 60% { opacity: 1; } }
+.panel-card.enter-open { animation: pa-card-in var(--dur-3) var(--ease-out) both; transform-origin: 0 100%; }
+.panel.closing .panel-card { animation: pa-card-out var(--dur-2) var(--ease-in) forwards; pointer-events: none; }
+.panel-inner.reveal > * { animation: pa-rise var(--dur-3) var(--ease-out) backwards; animation-delay: calc(var(--i, 0) * var(--stagger) * 2); }
+.enter-next .panel-inner.reveal > * { animation-name: pa-from-right; }
+.enter-prev .panel-inner.reveal > * { animation-name: pa-from-left; }
+.panel-inner.reveal > .panel-title { animation: pa-label-drop var(--dur-3) var(--spring) backwards; }
+/* Panel scrollbars: thin and faint, warming to pink while you're in the panel. */
+.panel-inner { scrollbar-color: rgba(255, 230, 240, .14) transparent; }
+.panel-inner:hover { scrollbar-color: rgba(255, 46, 126, .5) transparent; }
+/* The panel title is a paper label with a strip of tape. */
+.panel-title { position: relative; display: block; width: fit-content; max-width: calc(100% - 44px); margin: 2px 0 16px 2px; padding: 6px 14px 5px; font: 400 15px/1.1 var(--display);
+  letter-spacing: .04em; text-transform: uppercase; color: var(--ink); background: var(--paper); border-radius: 2px;
+  transform: rotate(-2deg); box-shadow: 0 3px 0 rgba(0, 0, 0, .5), 0 12px 24px -12px #000; }
+.panel-title::after { content: ""; position: absolute; right: -10px; top: -6px; width: 30px; height: 11px; rotate: 30deg;
+  background: rgba(143, 227, 255, .5); }
+
+.stage { flex: 1; display: flex; flex-direction: column; min-width: 0; position: relative; background: transparent; }
+.canvas-host { flex: 1; min-height: 0; position: relative; overflow: hidden; }
+/* The page sits in a pool of light: a neon spill behind it and a reflection on the wet floor below. */
+.page-glow { position: absolute; left: 0; top: 0; width: 0; height: 0; pointer-events: none; z-index: 0; border-radius: 2px; opacity: 0;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, .08), 0 40px 70px -24px rgba(0, 0, 0, .95), -30px 0 110px -10px rgba(255, 46, 126, .42),
+    30px 0 110px -10px rgba(143, 227, 255, .22), 0 0 240px 50px rgba(255, 177, 92, .1); transition: opacity var(--dur-3) var(--ease-out); }
+.page-glow.on { opacity: 1; animation: pa-neon-on calc(var(--dur-4) * 2) linear both; }
+/* The set's lights buzz on once, like a neon sign, when a design opens. */
+@keyframes pa-neon-on { 0% { opacity: 0; } 12% { opacity: .7; } 18% { opacity: .15; } 30% { opacity: .9; } 36% { opacity: .45; } 60%, 100% { opacity: 1; } }
+.page-glow::after { content: ""; position: absolute; left: 4%; right: 4%; top: calc(100% + 8px); height: 56px;
+  background: radial-gradient(ellipse 50% 100% at 50% 0%, rgba(255, 46, 126, .32), rgba(143, 227, 255, .08) 55%, transparent 75%); filter: blur(8px); }
+/* A warm key light falling on the page from above. */
+.page-glow::before { content: ""; position: absolute; left: 10%; right: 10%; bottom: 100%; height: 140px;
+  background: radial-gradient(ellipse 50% 100% at 50% 100%, rgba(255, 200, 120, .16), transparent 70%); filter: blur(4px); }
+.canvas-host > .canvas-container { z-index: 1; }
+
+/* The selection toolbar floats over the set. */
+.ctx-toolbar { position: absolute; top: 6px; left: 50%; translate: -50% 0; z-index: 10; max-width: calc(100% - 24px);
+  display: flex; align-items: center; gap: 4px; padding: 5px 8px; border-radius: 14px; background: var(--glass); backdrop-filter: blur(12px);
+  border: 1px solid var(--line-2); box-shadow: var(--shadow), 0 -1px 0 rgba(255, 46, 126, .35) inset; overflow-x: auto;
+  transition: opacity .15s, transform .2s var(--ease); }
+.ctx-toolbar.empty { opacity: 0; pointer-events: none; transform: translateY(-6px); }
+.ctx-toolbar .tgroup { display: flex; align-items: center; gap: 3px; }
+.ctx-toolbar.compact .btn { font-size: 0; gap: 0; padding: 0 9px; }
+.ctx-toolbar.compact .btn .icon { margin: 0; }
+.ctx-toolbar .tgroup + .tgroup { border-left: 1px solid var(--line-2); padding-left: 6px; margin-left: 3px; }
+
+/* Empty page hint: tells a beginner what to do next. */
+.stage-hint { position: absolute; left: 50%; bottom: 8px; translate: -50% 0; z-index: 5; display: flex; align-items: center; gap: 8px;
+  padding: 5px 6px 5px 5px; border-radius: 999px; background: var(--glass); backdrop-filter: blur(10px); border: 1px solid var(--line-2);
+  box-shadow: var(--shadow); white-space: nowrap; font-size: 13px; color: var(--muted);
+  transition: opacity var(--dur-2) var(--ease-out), transform var(--dur-3) var(--spring); }
+/* Toasts appear in the same spot (bottom centre): the hint steps aside while one is showing. */
+body:has(.toast.show) .stage-hint:not(.off) { opacity: 0; transform: translateY(10px); pointer-events: none; }
+.stage-hint .btn:hover { border-color: rgba(255, 46, 126, .5); box-shadow: 0 6px 16px -8px rgba(255, 46, 126, .8); }
+.stage-hint.off { opacity: 0; transform: translateY(12px); pointer-events: none; }
+.stage-hint img { width: 30px; height: 30px; object-fit: contain; }
+.stage-hint b { color: var(--text); font-weight: 600; }
+.stage-hint .btn { height: 28px; padding: 0 10px; font-size: 12.5px; border-radius: 999px; }
+
+/* ---- the dock row: size chip, tool dock, zoom ---- */
+.dockbar { height: var(--dock-h); flex: none; display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center;
+  gap: 12px; padding: 0 14px 10px; position: relative; z-index: 15; }
+.dock-left { display: flex; align-items: center; min-width: 0; }
+.size-label { display: inline-flex; align-items: center; gap: 6px; height: 30px; padding: 0 11px; border-radius: 999px; color: var(--muted);
+  font-size: 12px; background: rgba(12, 8, 14, .6); border: 1px solid var(--line); white-space: nowrap; overflow: hidden; }
+.size-label:empty { display: none; }
+.rail { position: relative; display: flex; align-items: flex-end; gap: 2px; padding: 6px 8px 5px; border-radius: 22px; max-width: calc(100vw - 520px);
+  background: var(--glass); backdrop-filter: blur(14px) saturate(1.2); border: 1px solid var(--line-2); overflow-x: auto; overflow-y: hidden;
+  box-shadow: var(--shadow), 0 1px 0 rgba(255, 255, 255, .06) inset; scrollbar-width: none; }
+.rail::-webkit-scrollbar { display: none; }
+.rail-wrap { position: relative; display: flex; align-items: center; min-width: 0; }
+.rail.dragging { cursor: grabbing; }
+.rail.dragging .rail-btn { pointer-events: none; }
+.rail-more { position: absolute; z-index: 2; top: 50%; translate: 0 -50%; width: 26px; height: 44px; border-radius: 13px; display: grid; place-items: center;
+  color: var(--text); background: rgba(20, 12, 24, .92); border: 1px solid var(--line-2); box-shadow: var(--shadow); cursor: pointer;
+  animation: oc-fade-in var(--dur-2) var(--ease-out); }
+.rail-more:hover { color: var(--accent-2); border-color: rgba(255, 46, 126, .55); box-shadow: var(--shadow), 0 0 16px -4px rgba(255, 46, 126, .8); }
+.rail-more .icon { transition: transform var(--dur-2) var(--spring); }
+.rail-more.prev:hover .icon { transform: translateX(-2px); }
+.rail-more.next:hover .icon { transform: translateX(2px); }
+/* A soft shade at an edge with more tools past it, under the arrow. */
+.rail-wrap::before, .rail-wrap::after { content: ""; position: absolute; z-index: 1; top: 1px; bottom: 1px; width: 44px; pointer-events: none; opacity: 0;
+  transition: opacity var(--dur-2) var(--ease-out); }
+.rail-wrap::before { left: 1px; border-radius: 22px 0 0 22px; background: linear-gradient(90deg, rgba(13, 9, 16, .95), transparent); }
+.rail-wrap::after { right: 1px; border-radius: 0 22px 22px 0; background: linear-gradient(270deg, rgba(13, 9, 16, .95), transparent); }
+.rail-wrap.more-l::before, .rail-wrap.more-r::after { opacity: 1; }
+.rail-more.prev { left: -6px; }
+.rail-more.next { right: -6px; }
+.rail-more[hidden] { display: none; }
+.rail-btn { --c: var(--accent); position: relative; flex: none; display: grid; justify-items: center; gap: 4px; width: 68px; padding: 4px 2px 3px;
+  border: 0; border-radius: 14px; background: transparent; color: var(--muted); font-size: 10.5px; font-weight: 600; letter-spacing: .01em; }
+.rail-btn:nth-child(3n + 2) { --c: var(--gold); }
+.rail-btn:nth-child(3n) { --c: var(--cyan); }
+.rail-btn > span { max-width: 66px; font-size: 10.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; transition: color var(--dur-1) var(--ease-out); }
+.rail-btn .ico { display: grid; place-items: center; width: 42px; height: 36px; border-radius: 12px; color: var(--text);
+  background: linear-gradient(180deg, #2a2131, #1d1623); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .07), 0 3px 0 rgba(0, 0, 0, .45);
+  transition: transform var(--dur-3) var(--spring), background var(--dur-1) var(--ease-out), color var(--dur-1) var(--ease-out), box-shadow var(--dur-2) var(--ease-out); }
+.rail-btn .ico .icon { transition: transform var(--dur-3) var(--spring); }
+.rail-btn:hover { color: var(--text); }
+.rail-btn:hover .ico { transform: translateY(-4px) rotate(-5deg); color: var(--c);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .07), inset 0 0 0 1px color-mix(in srgb, var(--c) 45%, transparent), 0 7px 0 rgba(0, 0, 0, .35),
+    0 10px 22px -8px color-mix(in srgb, var(--c) 75%, transparent); }
+.rail-btn:hover .ico .icon { transform: scale(1.1); }
+/* Press: the tile sinks onto its shadow (the global button squash is off here; the tile does it). */
+.rail-btn:not(:disabled):active { transform: none; }
+.rail-btn:active .ico { transform: translateY(1px) scale(.9); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .05), 0 1px 0 rgba(0, 0, 0, .5);
+  transition-duration: var(--dur-1); }
+.rail-btn:focus-visible { outline: none; }
+.rail-btn:focus-visible .ico { outline: 2px solid var(--accent-2); outline-offset: 2px; }
+.rail-btn.on { color: var(--text); }
+.rail-btn.on .ico { background: var(--c); color: var(--ink); transform: translateY(-3px); animation: pa-tile-on var(--dur-3) var(--spring);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, .4), 0 0 22px -3px var(--c), 0 6px 0 rgba(0, 0, 0, .4); }
+.rail-btn.on:hover .ico { transform: translateY(-5px); }
+@keyframes pa-tile-on { 0% { scale: .86; } 55% { scale: 1.08; } 100% { scale: 1; } }
+.rail-btn.on::after { content: ""; position: absolute; bottom: -3px; left: 50%; translate: -50% 0; width: 14px; height: 3px; border-radius: 3px;
+  background: var(--c); box-shadow: 0 0 8px var(--c); }
+/* With the gliding marker (shell.js railIndicator) the per-tool bar is not needed. */
+.rail.has-ind .rail-btn.on::after { content: none; }
+.rail-ind { position: absolute; left: 0; bottom: 2px; width: 16px; height: 3px; margin-left: -8px; border-radius: 3px; pointer-events: none;
+  background: var(--c, var(--accent)); box-shadow: 0 0 8px var(--c, var(--accent)), 0 0 2px var(--c, var(--accent)); opacity: 0;
+  transform: translateX(var(--x, 0px)) scaleX(.4);
+  transition: transform var(--dur-3) var(--ease-out), opacity var(--dur-2) var(--ease-out), background-color var(--dur-2) var(--ease-out), box-shadow var(--dur-2) var(--ease-out); }
+.rail-ind.on { opacity: 1; transform: translateX(var(--x, 0px)); }
+.rail-ind.jump { transition: opacity var(--dur-2) var(--ease-out); }
+.rail.compact .rail-btn { width: 50px; }
+.rail.compact .rail-btn > span:not(.ico) { display: none; }
+.zoombar { justify-self: end; display: flex; align-items: center; gap: 2px; height: 40px; padding: 0 4px 0 6px; border-radius: 999px;
+  background: var(--glass); backdrop-filter: blur(12px); border: 1px solid var(--line-2); box-shadow: var(--shadow); }
+.zoombar .ibtn { width: 30px; height: 30px; border-radius: 50%; }
+.zoombar .ibtn:not(:disabled):hover { color: var(--accent-2); background: rgba(255, 46, 126, .14); }
+.zoom-range { width: 92px; accent-color: var(--accent); }
+.zoom-label { min-width: 54px; height: 30px; border-radius: 999px; border: 0; background: var(--bg-4); font-size: 12px; font-weight: 600; margin-left: 2px;
+  font-variant-numeric: tabular-nums; }
+.zoom-label:hover { background: var(--accent); color: #fff; box-shadow: 0 0 16px -4px rgba(255, 46, 126, .9); }
+.size-label .icon { color: var(--accent-2); }
+
+/* The set comes up when a design opens: the header drops in, the dock rises. */
+.editor-view.active > .topbar { animation: oc-slide-down var(--dur-3) var(--ease-out) backwards; }
+.editor-view.active > .dockbar { animation: oc-fade-up var(--dur-3) var(--ease-out) calc(var(--stagger) * 3) backwards; }
+
+/* Crowded header: drop the action labels, then the wordmark and the pill text. */
+.topbar.tight .top-actions .btn:not(.primary) { font-size: 0; gap: 0; padding: 0 9px; }
+.topbar.tight .top-actions .btn:not(.primary) .icon { margin: 0; }
+.topbar .wordmark .wm-tag { display: none; }
+.topbar.tight .save-state { display: none; }
+.topbar.tighter .wordmark { display: none; }
+.topbar.tighter .cmd-pill { flex: 0 0 auto; width: 40px; padding: 0; justify-content: center; }
+.topbar.tighter .cmd-pill span, .topbar.tighter .cmd-pill kbd { display: none; }
+@media (max-width: 1360px) {
+  .zoom-range { width: 70px; }
+}
+
+/* When the header is tight the pill says just "Search",
+   rather than a cut-off "What do…"; the shortcut hint goes before the label does. */
+.cmd-pill { container-type: inline-size; }
+@container (max-width: 250px) {
+  .cmd-pill span { font-size: 0; }
+  .cmd-pill span::before { content: "Search"; font-size: 13.5px; }
+}
+@container (max-width: 160px) { .cmd-pill kbd { display: none; } }
+@container (max-width: 70px) { .cmd-pill span { display: none; } }

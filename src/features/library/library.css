@@ -1,0 +1,28 @@
+/* My library: the "My elements" shelf in the Elements panel and the template-panel buttons. */
+.lib-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.lib-tile { position: relative; }
+.lib-tile .el-tile { width: 100%; }
+.lib-tile .el-tile img { max-width: 100%; max-height: 100%; object-fit: contain; }
+.lib-del { position: absolute; top: 4px; right: 4px; width: 22px; height: 22px; cursor: pointer; opacity: 0; transition: opacity .15s; }
+.lib-tile:hover .lib-del, .lib-del:focus-visible { opacity: 1; }
+.lib-empty { font-size: 12.5px; }
+.lib-shelf .el-seeall { display: inline-flex; align-items: center; gap: 4px; }
+.lib-ask { display: grid; gap: 10px; }
+.tp-save-tpl { display: flex; align-items: center; gap: 6px; width: 100%; justify-content: center; margin-bottom: 10px; }
+.lib-tpl-del { right: 40px; }
+.lib-del { display: grid; place-items: center; padding: 0; border: 0; }
+.lib-more { width: 100%; justify-content: center; gap: 4px; margin-top: 8px; }
+.lib-grid.lib-all { animation: lib-in .2s var(--ease); }
+@keyframes lib-in { from { opacity: .4; transform: translateY(-3px); } to { opacity: 1; transform: none; } }
+
+/* ---- polish pass (28 Oct 2026) ---- */
+.el-empty.lib-empty { display: grid; justify-items: center; gap: 6px; padding: 16px 12px; border: 1px dashed var(--line-2); border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, .02); color: var(--muted); text-align: center; line-height: 1.45; }
+.lib-empty .icon { color: var(--accent-2); opacity: .85; }
+.lib-tile { transition: transform var(--dur-2) var(--spring); }
+.lib-tile:hover { transform: translateY(-2px); }
+.lib-tile:focus-within .lib-del { opacity: 1; }
+.lib-del { transition: opacity var(--dur-1) var(--ease-out), transform var(--dur-2) var(--spring), background-color var(--dur-1) var(--ease-out); }
+.lib-del:hover { transform: scale(1.1); background: var(--danger); color: #fff; }
+.lib-grid.lib-all { animation: oc-fade-up var(--dur-2) var(--ease-out); }
+.lib-ask { animation: oc-fade-up var(--dur-2) var(--ease-out) backwards; }

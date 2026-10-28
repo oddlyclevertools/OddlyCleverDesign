@@ -1,0 +1,18 @@
+/* Background remover: the one-time model download box. */
+.co-dl { display: grid; gap: 12px; min-width: min(420px, 80vw); }
+.co-bar { height: 10px; border-radius: 6px; background: rgba(255, 255, 255, .1); overflow: hidden; }
+.co-bar > i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, #ff2e7e, #ffc83d); transition: width .2s; }
+.co-note { margin: 0; font-size: 13px; opacity: .85; }
+
+/* Touch-up bar: hardness, whole-edge sliders and the backdrop switch. */
+.co-lbl { font-size: 12px; color: var(--muted); white-space: nowrap; }
+.co-edge-title { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 700; color: var(--text); padding: 0 4px; }
+.co-backs { display: inline-flex; align-items: center; gap: 4px; margin-left: 4px; }
+.co-back { display: grid; place-items: center; width: 28px; height: 28px; padding: 0; border: 1.5px solid var(--line-2); border-radius: 8px; background: var(--bg-3); }
+.co-back:hover { border-color: var(--text); }
+.co-back.on { border-color: var(--cyan, #8fe3ff); box-shadow: 0 0 0 2px rgba(143, 227, 255, .25); }
+.co-back:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 1px; }
+.co-swatch { display: block; width: 16px; height: 16px; border-radius: 4px; border: 1px solid rgba(255, 255, 255, .25); }
+.co-swatch.page { background: linear-gradient(135deg, #3a2a4a 50%, #7b5cff 50%); }
+.co-swatch.checks { background: repeating-conic-gradient(#cfcfd6 0 25%, #fff 0 50%) 0 0 / 8px 8px; }
+.co-hard { width: 90px; }

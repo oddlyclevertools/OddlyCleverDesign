@@ -1,0 +1,63 @@
+/* Shell motion for the overlays the shell owns: the first-run welcome, the tour and the Ctrl+K search.
+   Their base look lives in overlays.css; this file only adds entrances and hover/press feel, and is
+   loaded after it (shell.js). Only opacity, translate, scale and rotate move, never layout. The
+   keyframes pa-rise and pa-tile-on are in studio.css. */
+
+/* ---- first-run welcome: the sign buzzes on, then the question, then the cards one by one ---- */
+@keyframes pa-sparks-in { from { opacity: 0; translate: -36px 40px; rotate: -10deg; } 70% { opacity: 1; } }
+@keyframes pa-neon-sign { 0% { opacity: 0; } 20% { opacity: .8; } 28% { opacity: .2; } 44% { opacity: 1; } 52% { opacity: .55; } 70%, 100% { opacity: 1; } }
+
+.ob-welcome { transition: opacity var(--dur-3) var(--ease-out); }
+.ob-welcome .ob-panel { transition: transform var(--dur-4) var(--spring); }
+/* Sparks steps in once and stays put (no endless sway). */
+.ob-welcome .ob-sparks { animation: pa-sparks-in var(--dur-4) var(--spring) var(--dur-1) backwards; }
+.ob-welcome .ob-sign { animation: pa-neon-sign calc(var(--dur-4) * 2) linear calc(var(--stagger) * 4) backwards; }
+.ob-welcome .ob-q { animation: pa-rise var(--dur-3) var(--ease-out) calc(var(--stagger) * 5) backwards; }
+.ob-welcome .ob-sub { animation: pa-rise var(--dur-3) var(--ease-out) calc(var(--stagger) * 7) backwards; }
+.ob-welcome .ob-choice { animation: pa-rise var(--dur-3) var(--ease-out) calc(var(--stagger) * (9 + var(--i, 0) * 2)) backwards;
+  transition: transform var(--dur-3) var(--spring), border-color var(--dur-1) var(--ease-out), box-shadow var(--dur-2) var(--ease-out),
+    background-color var(--dur-1) var(--ease-out); }
+.ob-welcome .ob-choice:active { transform: translateY(-2px) scale(.97); transition-duration: var(--dur-1); }
+.ob-welcome .ob-shape { transition: transform var(--dur-3) var(--spring), box-shadow var(--dur-2) var(--ease-out); }
+.ob-welcome .ob-choice:hover .ob-shape, .ob-welcome .ob-choice:focus-visible .ob-shape {
+  box-shadow: 0 0 0 3px var(--ink), 0 0 0 5px rgba(255, 255, 255, .9), 0 0 26px -2px var(--tone); }
+.ob-welcome .ob-other .ob-shape-box { transition: color var(--dur-1) var(--ease-out), transform var(--dur-3) var(--spring); }
+.ob-welcome .ob-other:hover .ob-shape-box { color: var(--accent-2); transform: rotate(-12deg) scale(1.1); }
+.ob-welcome .ob-skip { animation: oc-fade-in var(--dur-3) var(--ease-out) calc(var(--stagger) * 20) backwards;
+  transition: color var(--dur-1) var(--ease-out), text-decoration-color var(--dur-1) var(--ease-out); }
+.ob-welcome .ob-skip:hover { text-decoration-color: var(--accent-2); }
+
+/* ---- the tour: each step's card pops, Sparks nods, the spotlight glides ---- */
+@keyframes pa-tour-pop { from { opacity: 0; scale: .92; rotate: -1.5deg; } }
+@keyframes pa-face-pop { from { opacity: 0; scale: .5; rotate: 18deg; } }
+.ob-tour-layer { transition: opacity var(--dur-2) var(--ease-out); }
+.ob-spot { transition: left var(--dur-3) var(--ease-in-out), top var(--dur-3) var(--ease-in-out), width var(--dur-3) var(--ease-in-out),
+  height var(--dur-3) var(--ease-in-out), opacity var(--dur-2) var(--ease-out); }
+.ob-tour { transition: left var(--dur-3) var(--ease-in-out), top var(--dur-3) var(--ease-in-out); }
+.ob-tour.pop { animation: pa-tour-pop var(--dur-3) var(--spring); }
+.ob-tour.pop .ob-tour-face { animation: pa-face-pop var(--dur-4) var(--spring) var(--dur-1) backwards; }
+.ob-tour.pop .ob-tt, .ob-tour.pop .ob-tx { animation: pa-rise var(--dur-3) var(--ease-out) calc(var(--stagger) * 2) backwards; }
+.ob-tour.pop .ob-tx { animation-delay: calc(var(--stagger) * 4); }
+.ob-dots i { transition: background-color var(--dur-2) var(--ease-out), width var(--dur-3) var(--spring); }
+
+/* ---- Ctrl+K: the box pops out of the search pill's direction, the list reveals in order ---- */
+.pal-back { transition: opacity var(--dur-2) var(--ease-out); }
+.pal { opacity: 0; transform: translateY(-14px) scale(.96);
+  transition: transform var(--dur-3) var(--spring), opacity var(--dur-2) var(--ease-out); }
+.pal-back.show .pal { opacity: 1; transform: none; }
+.pal-back.show .pal-face { animation: pa-face-pop var(--dur-4) var(--spring) var(--dur-1) backwards; }
+/* Rows stagger in only for the opening list (input still empty), not on every keystroke. */
+.pal-back:has(.pal-input:placeholder-shown) .pal-list > * { animation: pa-rise var(--dur-3) var(--ease-out) backwards; }
+.pal-back:has(.pal-input:placeholder-shown) .pal-list > :nth-child(2) { animation-delay: calc(var(--stagger) * 1); }
+.pal-back:has(.pal-input:placeholder-shown) .pal-list > :nth-child(3) { animation-delay: calc(var(--stagger) * 2); }
+.pal-back:has(.pal-input:placeholder-shown) .pal-list > :nth-child(4) { animation-delay: calc(var(--stagger) * 3); }
+.pal-back:has(.pal-input:placeholder-shown) .pal-list > :nth-child(5) { animation-delay: calc(var(--stagger) * 4); }
+.pal-back:has(.pal-input:placeholder-shown) .pal-list > :nth-child(6) { animation-delay: calc(var(--stagger) * 5); }
+.pal-back:has(.pal-input:placeholder-shown) .pal-list > :nth-child(7) { animation-delay: calc(var(--stagger) * 6); }
+.pal-back:has(.pal-input:placeholder-shown) .pal-list > :nth-child(n + 8) { animation-delay: calc(var(--stagger) * 7); }
+.pal-row { transition: background-color var(--dur-1) var(--ease-out), box-shadow var(--dur-1) var(--ease-out); }
+.pal-ico { transition: background-color var(--dur-1) var(--ease-out), color var(--dur-1) var(--ease-out), box-shadow var(--dur-2) var(--ease-out); }
+.pal-row.on .pal-ico { animation: pa-tile-on var(--dur-2) var(--spring); }
+.pal-tag { transition: background-color var(--dur-1) var(--ease-out), color var(--dur-1) var(--ease-out); }
+.pal-list { scrollbar-color: rgba(255, 230, 240, .14) transparent; }
+.pal-list:hover { scrollbar-color: rgba(255, 46, 126, .5) transparent; }
