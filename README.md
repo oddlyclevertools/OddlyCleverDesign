@@ -6,7 +6,7 @@ It's free, it runs in your browser, and you don't make an account. Make YouTube 
 
 **Use it now: [oddlyclevertools.github.io/OddlyCleverDesign](https://oddlyclevertools.github.io/OddlyCleverDesign/)** (Chrome or Edge on a PC works best: the background remover and video export use your graphics card.)
 
-See it working: [the walkthrough on YouTube](https://www.youtube.com/@oddlyclevertools)
+See it working: [the walkthrough on YouTube](https://youtu.be/JW7PvwJSv5A)
 
 [![Buy me a tea on Ko-fi](https://img.shields.io/badge/Buy%20me%20a%20tea-Ko--fi-ff2e7e?logo=kofi&logoColor=white)](https://ko-fi.com/oddlyclevertools)
 
